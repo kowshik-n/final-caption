@@ -1,6 +1,5 @@
 const logger = require('../utils/logger');
 
-// Store recent captions for demo purposes
 let captionHistory = [];
 const MAX_HISTORY = 100;
 
@@ -15,30 +14,22 @@ exports.procesCaption = (req, res) => {
     const timestamp = new Date().toISOString();
     const time = new Date(timestamp).toLocaleTimeString();
 
-    // Store in history
-    captionHistory.push({
-      text,
-      timestamp,
-    });
+    captionHistory.push({ text, timestamp });
 
     if (captionHistory.length > MAX_HISTORY) {
       captionHistory.shift();
     }
 
-    // Log prominently to terminal
     logger.info(`\n📢 Caption #${captionHistory.length} [${time}]: ${text}\n`);
 
-    // Process caption and generate response
     const response = generateResponse(text);
-
-    logger.debug(`Response generated: ${response}`);
 
     res.json({
       success: true,
       caption: text,
       response: response,
       timestamp: timestamp,
-      isSystemResponse: true,  // Flag to prevent re-capture in Teams DOM
+      isSystemResponse: true,
     });
   } catch (error) {
     logger.error('Error processing caption:', error.message);
@@ -58,9 +49,7 @@ exports.clearHistory = (req, res) => {
   res.json({ success: true, message: 'History cleared' });
 };
 
-// Simple response generation - can be extended with AI/ML
 function generateResponse(caption) {
-  // Avoid repetitive echoing - just acknowledge
   const responses = [
     "Understood",
     "Got it",
@@ -70,7 +59,5 @@ function generateResponse(caption) {
     "Noted"
   ];
   
-  // Pick a random response instead of echoing
-  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-  return randomResponse;
+  return responses[Math.floor(Math.random() * responses.length)];
 }
