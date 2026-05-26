@@ -2,17 +2,23 @@
   "manifest_version": 3,
   "name": "Teams Caption Sender",
   "version": "1.0",
-  "description": "Sends Microsoft Teams captions to a local Node.js backend.",
-  "permissions": ["scripting", "activeTab", "storage"],
+  "description": "Sends Microsoft Teams captions to Copilot for intelligent responses.",
+  "permissions": ["scripting", "activeTab", "storage", "webRequest"],
   "host_permissions": [
     "https://teams.microsoft.com/*",
     "https://teams.live.com/*",
-    "http://localhost:3100/*"
+    "https://copilot.microsoft.com/*",
+    "https://bing.com/*"
   ],
   "content_scripts": [
     {
       "matches": ["https://teams.microsoft.com/*", "https://teams.live.com/*"],
       "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://copilot.microsoft.com/*", "https://bing.com/*"],
+      "js": ["copilot-helper.js"],
       "run_at": "document_idle"
     }
   ],
