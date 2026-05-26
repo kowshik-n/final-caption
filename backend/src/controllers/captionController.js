@@ -38,6 +38,7 @@ exports.procesCaption = (req, res) => {
       caption: text,
       response: response,
       timestamp: timestamp,
+      isSystemResponse: true,  // Flag to prevent re-capture in Teams DOM
     });
   } catch (error) {
     logger.error('Error processing caption:', error.message);
